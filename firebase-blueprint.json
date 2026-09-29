@@ -1,0 +1,95 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Perfil de empleado o administrador de la ferretería",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 255 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["dueño", "encargado", "mostrador", "deposito", "compras"] },
+        "avatar": { "type": "string", "maxLength": 300 },
+        "status": { "type": "string", "enum": ["disponible", "ocupado", "ausente"] },
+        "phone": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Tarea operativa de la ferretería con asignación y paso a paso",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "department": { "type": "string", "enum": ["inventario", "deposito", "mostrador", "compras", "mantenimiento", "despacho"] },
+        "priority": { "type": "string", "enum": ["baja", "media", "alta", "urgente"] },
+        "status": { "type": "string", "enum": ["pendiente", "en_progreso", "en_revision", "completada", "bloqueada"] },
+        "assignedToUid": { "type": "string", "maxLength": 128 },
+        "assignedToName": { "type": "string", "maxLength": 100 },
+        "assignedToRole": { "type": "string", "maxLength": 50 },
+        "createdByUid": { "type": "string", "maxLength": 128 },
+        "createdByName": { "type": "string", "maxLength": 100 },
+        "estimatedMinutes": { "type": "number" },
+        "dueDate": { "type": "string", "maxLength": 50 },
+        "steps": { "type": "array" },
+        "blockerReason": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "department", "priority", "status", "assignedToUid", "createdByUid"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Notificación en tiempo real para empleados y administradores",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "taskId": { "type": "string", "maxLength": 128 },
+        "taskTitle": { "type": "string", "maxLength": 150 },
+        "type": { "type": "string", "enum": ["task_assigned", "step_completed", "status_changed", "task_completed", "task_blocked"] },
+        "message": { "type": "string", "maxLength": 300 },
+        "read": { "type": "boolean" },
+        "createdByUid": { "type": "string", "maxLength": 128 },
+        "createdByName": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "taskId", "type", "message", "read", "createdByUid"]
+    },
+    "SupplierLead": {
+      "title": "SupplierLead",
+      "description": "Registro de proveedores y compras estratégicas para optimizar el negocio",
+      "type": "object",
+      "properties": {
+        "supplierName": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "contactInfo": { "type": "string", "maxLength": 200 },
+        "priceNotes": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["contacto_inicial", "cotizacion_recibida", "analizando", "aprobado"] },
+        "potentialSavings": { "type": "string", "maxLength": 100 },
+        "createdByUid": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["supplierName", "category", "status", "createdByUid"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Perfiles de usuarios y empleados de la ferretería"
+    },
+    "/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Colección de tareas delegadas y operativas de la ferretería"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "Notificaciones en tiempo real para responsables de tareas"
+    },
+    "/supplier_leads/{leadId}": {
+      "schema": "SupplierLead",
+      "description": "Gestión de compras y proveedores para el tiempo ganado del dueño"
+    }
+  }
+}

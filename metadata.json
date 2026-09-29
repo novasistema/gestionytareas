@@ -1,0 +1,6 @@
+{
+  "name": "Ferretería Bruzzone - Gestión y Delegación",
+  "description": "Sistema de gestión y organización de tareas, delegación paso a paso y compras para Ferretería Bruzzone.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
